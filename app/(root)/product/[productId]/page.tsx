@@ -11,7 +11,7 @@ interface Props {
 	params: Params
 }
 export async function generateMetadata({ params }: Props) {
-	const { productId } = await params
+	const { productId } =  params
 	const res = await getProduct({ id: productId })
 	const product = res?.data?.product
 
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props) {
 	}
 }
 const Page: FC<Props> = async ({ params }) => {
-	const { productId } = await params
+	const { productId } =  params
 
 	const res = await getProduct({ id: productId })
 
