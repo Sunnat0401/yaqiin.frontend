@@ -1,45 +1,3 @@
-// 'use client'
-
-// import { FC } from 'react'
-// import { Button } from '../ui/button'
-// import { useRouter, useSearchParams } from 'next/navigation'
-// import { formUrlQuery } from '@/lib/utils'
-
-// interface Props {
-// 	pageNumber: number
-// 	isNext: boolean
-// }
-// const Pagination: FC<Props> = ({ isNext, pageNumber }) => {
-// 	const router = useRouter()
-// 	const searchParams = useSearchParams()
-
-// 	const onNavigation = (direcation: 'prev' | 'next') => {
-// 		const nextPageNumber = direcation === 'prev' ? pageNumber - 1 : pageNumber + 1
-
-// 		const newUrl = formUrlQuery({
-// 			key: 'page',
-// 			params: searchParams.toString(),
-// 			value: nextPageNumber.toString(),
-// 		})
-// 		router.push(newUrl)
-// 	}
-
-// 	if (!isNext && pageNumber === 1) return null
-
-// 	return (
-// 		<div className='flex w-full items-center justify-center gap-2 mt-4'>
-// 			<Button size={'sm'} onClick={() => onNavigation('prev')} disabled={pageNumber === 1}>
-// 				Prev
-// 			</Button>
-// 			<p>1</p>
-// 			<Button size={'sm'} onClick={() => onNavigation('next')} disabled={!isNext}>
-// 				Next
-// 			</Button>
-// 		</div>
-// 	)
-// }
-
-// export default Pagination
 'use client'
 
 import { FC } from 'react'
@@ -51,10 +9,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 interface Props {
   pageNumber: number
   isNext: boolean
-  totalPages?: number // Optional total pages for full pagination control
 }
 
-const Pagination: FC<Props> = ({ isNext, pageNumber, totalPages }) => {
+const Pagination: FC<Props> = ({ isNext, pageNumber }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -83,27 +40,28 @@ const Pagination: FC<Props> = ({ isNext, pageNumber, totalPages }) => {
   // Calculate page numbers to display
   const getPageNumbers = () => {
     const pages = []
-    const maxVisiblePages = 5 // Adjust this number as needed
+    const maxVisiblePages = 5 // Ko'rsatiladigan maksimal sahifalar soni
     
-    // Always show first page
-    if (pageNumber > 2) {
+    // Agar joriy sahifa 4 dan katta bo'lsa, 1-sahifani ko'rsatamiz
+    if (pageNumber > 3) {
       pages.push(1)
-      if (pageNumber > 3) pages.push('...')
+      // Agar joriy sahifa 4 dan farq qilsa, "..." ko'rsatamiz
+      if (pageNumber > 4) pages.push('...')
     }
 
-    // Show current page and surrounding pages
-    const start = Math.max(2, pageNumber - 1)
-    const end = Math.min(totalPages || pageNumber + 2, pageNumber + 2)
+    // Atrofidagi sahifalarni hisoblaymiz
+    const start = Math.max(1, pageNumber - 1)
+    const end = isNext ? pageNumber + 1 : pageNumber // Agar next disabled bo'lsa, keyingi sahifani ko'rsatmaymiz
     
     for (let i = start; i <= end; i++) {
-      pages.push(i)
+      // Bitta sahifa 2 marta qo'shilmasligi uchun
+      if (!pages.includes(i)) pages.push(i)
     }
 
-    // Always show last page if needed
-    if (pageNumber < (totalPages || pageNumber + 3) - 2) {
-      if (pageNumber < (totalPages || pageNumber + 3) - 3) pages.push('...')
-      if (totalPages) pages.push(totalPages)
-      else if (isNext) pages.push(pageNumber + 3)
+    // Agar "Next" tugmasi active bo'lsa, keyingi sahifalarni ko'rsatamiz
+    if (isNext) {
+      if (pageNumber < end + 2) pages.push('...')
+      pages.push(end + 2) // Oxirgi sahifani ko'rsatish
     }
 
     return pages
