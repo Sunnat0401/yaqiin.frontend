@@ -15,8 +15,8 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-	title: 'Seleor elektron savdo',
-	description: 'Next.js bilan qurilgan Seleor elektron savdo veb-sayti',
+	title: 'Yaqiin elektron savdo',
+	description: 'Next.js bilan qurilgan Yaqiin elektron savdo veb-sayti',
 	icons: { icon: '/favicon.png' },
 }
 
