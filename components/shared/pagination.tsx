@@ -68,7 +68,7 @@ const Pagination: FC<Props> = ({ isNext, pageNumber }) => {
   }
 
   return (
-    <div className='flex w-full items-center justify-center gap-2 mt-8'>
+    <div className=' mt-5 mb-5flex w-full items-center justify-center gap-2 mt-8'>
       <Button 
         variant="outline"
         size="sm" 
