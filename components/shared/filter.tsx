@@ -4,11 +4,11 @@ import { Search, SlidersHorizontal, X, Filter as FilterIcon, Sparkles } from 'lu
 import { Input } from '../ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Button } from '../ui/button'
-import { categories, translateToEnglish } from '@/lib/constants'
-import { cn, formUrlQuery, removeUrlQuery } from '@/lib/utils'
+import { categories, translateToEnglish, translateToUzbek } from '@/lib/constants'
+import { cn, removeUrlQuery } from '@/lib/utils'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { debounce } from 'lodash'
-import { FC, useCallback, useState, useEffect, useRef } from 'react'
+import { FC, useState, useEffect, useRef } from 'react'
 
 interface Props {
   showCategory?: boolean
@@ -21,6 +21,10 @@ const Filter: FC<Props> = ({ showCategory }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  
+  // Get current category from URL and translate to Uzbek for display
+  const currentCategory = searchParams.get('category')
+  const displayCategory = currentCategory ? translateToUzbek(currentCategory) : ''
 
   // Check screen size
   useEffect(() => {
@@ -61,13 +65,16 @@ const Filter: FC<Props> = ({ showCategory }) => {
   const onSearchChange = debounce((value: string) => {
     const params = new URLSearchParams(searchParams)
     
+    // Reset page to 1 when searching
+    params.delete('page')
+    
     if (value.trim()) {
       params.set('q', value.trim())
     } else {
       params.delete('q')
     }
     
-    router.push(`/?${params.toString()}`)
+    router.push(`/?${params.toString()}`, { scroll: false })
   }, 300)
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,9 +85,10 @@ const Filter: FC<Props> = ({ showCategory }) => {
 
   const clearSearch = () => {
     setSearchValue('')
-    const newUrl = removeUrlQuery({ key: 'q', params: searchParams.toString() })
-    router.push(newUrl, { scroll: false })
-    // Inputni tozalagandan so'ng fokusni qayta tiklash
+    const params = new URLSearchParams(searchParams)
+    params.delete('q')
+    params.delete('page')
+    router.push(`/?${params.toString()}`, { scroll: false })
     setTimeout(() => inputRef.current?.focus(), 0);
   }
 
@@ -99,6 +107,9 @@ const Filter: FC<Props> = ({ showCategory }) => {
   const onSortChange = (value: string) => {
     const params = new URLSearchParams(searchParams)
     
+    // Reset page to 1 when sorting
+    params.delete('page')
+    
     // Saralash qiymatlarini inglizchaga tarjima qilamiz
     let sortValue = value
     if (value === 'Eng yangilari') {
@@ -113,22 +124,25 @@ const Filter: FC<Props> = ({ showCategory }) => {
       params.delete('filter')
     }
     
-    router.push(`/?${params.toString()}`)
+    router.push(`/?${params.toString()}`, { scroll: false })
   }
 
   const onCategoryChange = (value: string) => {
     const params = new URLSearchParams(searchParams)
     
+    // Reset page to 1 when changing category
+    params.delete('page')
+    
     // Uzbekcha kategoriyani inglizchaga tarjima qilamiz URL uchun
     const englishCategory = translateToEnglish(value)
     
-    if (englishCategory === 'All') {
+    if (englishCategory === 'All' || englishCategory === 'Barchasi') {
       params.delete('category')
     } else {
       params.set('category', englishCategory)
     }
     
-    router.push(`/?${params.toString()}`)
+    router.push(`/?${params.toString()}`, { scroll: false })
   }
 
   const FilterControls = () => (
@@ -237,7 +251,7 @@ const Filter: FC<Props> = ({ showCategory }) => {
       {/* Premium Category Filter */}
       {showCategory && (
         <div className='relative group'>
-          <Select onValueChange={onCategoryChange}>
+          <Select onValueChange={onCategoryChange} value={displayCategory}>
             <SelectTrigger className={cn(
               'h-[42px] w-full min-w-[180px] bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl',
               'border-2 border-gray-200/50 dark:border-gray-700/50',
@@ -311,7 +325,7 @@ const Filter: FC<Props> = ({ showCategory }) => {
             'transition-all duration-300 ease-out',
             'hover:scale-[1.02] active:scale-[0.98]',
             'border-0 relative overflow-hidden',
-            'justify-end ml-auto max-[500px]:m-auto justify-center',
+            'ml-auto max-[500px]:mx-auto max-[500px]:justify-center justify-end',
           )}
         >
           <div className='absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000' />

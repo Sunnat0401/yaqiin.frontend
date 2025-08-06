@@ -7,7 +7,7 @@ export const categoriesEn = ['All', 'Shoes', 'T-Shirts', 'Clothes', 'Books', 'Ac
 export const categories = ['Barchasi', 'Poyabzal', 'Futbolka', 'Kiyim', 'Kitoblar', 'Aksessuarlar', 'Universal']
 
 // Kategoriya tarjima mapping
-export const categoryTranslations = {
+export const categoryTranslations: Record<string, string> = {
 	// Uzbekchadan inglizchaga
 	'Barchasi': 'All',
 	'Poyabzal': 'Shoes', 
@@ -27,12 +27,12 @@ export const categoryTranslations = {
 
 // Uzbekchadan inglizchaga tarjima
 export const translateToEnglish = (uzbekCategory: string): string => {
-	return categoryTranslations[uzbekCategory as keyof typeof categoryTranslations] || uzbekCategory
+	return categoryTranslations[uzbekCategory] || uzbekCategory
 }
 
 // Inglizchadan uzbekchaga tarjima
 export const translateToUzbek = (englishCategory: string): string => {
-	return categoryTranslations[englishCategory as keyof typeof categoryTranslations] || englishCategory
+	return categoryTranslations[englishCategory] || englishCategory
 }
 
 // Kategoriyalar uchun ikki tomonlama tarjima funksiyalari
