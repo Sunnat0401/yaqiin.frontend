@@ -1,3 +1,5 @@
+// src/app/sign-in/page.tsx
+
 'use client'
 
 import { login } from '@/actions/auth.action'
@@ -34,21 +36,21 @@ const SignInPage = () => {
 		setIsLoading(true)
 		const res = await login(values)
 		if (res?.serverError || res?.validationErrors || !res?.data) {
-			return onError('Something went wrong')
+			return onError('Xatolik yuz berdi')
 		}
 		if (res.data.failure) {
 			return onError(res.data.failure)
 		}
 		if (res.data.user) {
-			toast({ description: 'Logged in successfully' })
+			toast({ description: 'Muvaffaqiyatli kirildi' })
 			signIn('credentials', { userId: res.data.user._id, callbackUrl: '/' })
 		}
 	}
 
 	return (
-		<Card className='w-1/2 p-4'>
-			<h1 className='text-xl font-bold'>Sign In</h1>
-			<p className='text-sm text-muted-foreground'>Welcome back! Please sign in to your account.</p>
+		<Card className='w-full max-w-sm p-4'>
+			<h1 className='text-xl font-bold'>Kirish</h1>
+			<p className='text-sm text-muted-foreground'>Xush kelibsiz! Hisobingizga kirishingizni so'raymiz.</p>
 			<Separator className='my-3' />
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
@@ -57,9 +59,9 @@ const SignInPage = () => {
 						name='email'
 						render={({ field }) => (
 							<FormItem className='space-y-0'>
-								<Label>Email</Label>
+								<Label>Elektron pochta</Label>
 								<FormControl>
-									<Input placeholder='example@gmial.com' disabled={isLoading} {...field} />
+									<Input placeholder='misol@gmail.com' disabled={isLoading} {...field} />
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
@@ -70,7 +72,7 @@ const SignInPage = () => {
 						name='password'
 						render={({ field }) => (
 							<FormItem className='space-y-0'>
-								<Label>Password</Label>
+								<Label>Parol</Label>
 								<FormControl>
 									<Input placeholder='****' type='password' disabled={isLoading} {...field} />
 								</FormControl>
@@ -78,17 +80,17 @@ const SignInPage = () => {
 							</FormItem>
 						)}
 					/>
-					<Button type='submit' disabled={isLoading}>
-						Submit {isLoading && <Loader className='animate-spin' />}
+					<Button type='submit' disabled={isLoading} className='w-full'>
+						Yuborish {isLoading && <Loader className='ml-2 h-4 w-4 animate-spin' />}
 					</Button>
 				</form>
 			</Form>
 
-			<div className='mt-4'>
+			<div className='mt-4 text-center'>
 				<div className='text-sm text-muted-foreground'>
-					Don&apos;t have an account?{' '}
+					Hisobingiz yo'qmi?{' '}
 					<Button asChild variant={'link'} className='p-0'>
-						<Link href='/sign-up'>Sign up</Link>
+						<Link href='/sign-up'>Ro'yxatdan o'tish</Link>
 					</Button>
 				</div>
 			</div>

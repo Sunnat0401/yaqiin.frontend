@@ -16,7 +16,7 @@ const CreateOrderButton = () => {
 		setIsLoading(true)
 		const res = await stripeCheckout({ id: productId })
 		if (res?.serverError || res?.validationErrors || !res?.data) {
-			return onError('Something went wrong')
+			return onError('Xatolik yuz berdi')
 		}
 		if (res.data.failure) {
 			return onError(res.data.failure)
@@ -30,11 +30,11 @@ const CreateOrderButton = () => {
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<Button className='w-fit' size={'lg'}>
-					Purchase
+				<Button className='w-fit' size={'lg'} onClick={onStripe}>
+					Sotib olish
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className='p-1 w-56' side='right'>
+			{/* <PopoverContent className='p-1 w-56' side='right'>
 				<div className='flex flex-col space-y-1'>
 					<Button variant={'secondary'} disabled={isLoading} onClick={onStripe}>
 						<Image src={'/stripe.svg'} alt='stripe' width={70} height={50} className='cursor-pointer' />
@@ -49,7 +49,7 @@ const CreateOrderButton = () => {
 						<Image src={'/uzum.svg'} alt='stripe' width={70} height={50} className='cursor-pointer' />
 					</Button>
 				</div>
-			</PopoverContent>
+			</PopoverContent> */}
 		</Popover>
 	)
 }

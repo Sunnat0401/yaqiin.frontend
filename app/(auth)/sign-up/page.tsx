@@ -1,3 +1,5 @@
+// src/app/sign-up/page.tsx
+
 'use client'
 
 import { register, sendOtp, verifyOtp } from '@/actions/auth.action'
@@ -39,13 +41,13 @@ const SignUpPage = () => {
 		setIsLoading(true)
 		const res = await sendOtp({ email: values.email })
 		if (res?.serverError || res?.validationErrors || !res?.data) {
-			return onError('Something went wrong')
+			return onError('Xatolik yuz berdi')
 		}
 		if (res.data.failure) {
 			return onError(res.data.failure)
 		}
 		if (res.data.status === 200) {
-			toast({ description: 'OTP sent successfully' })
+			toast({ description: 'OTP muvaffaqiyatli yuborildi' })
 			setIsVerifying(true)
 			setIsLoading(false)
 			setIsResend(false)
@@ -56,7 +58,7 @@ const SignUpPage = () => {
 		setIsLoading(true)
 		const res = await verifyOtp({ otp: values.otp, email: form.getValues('email') })
 		if (res?.serverError || res?.validationErrors || !res?.data) {
-			return onError('Something went wrong')
+			return onError('Xatolik yuz berdi')
 		}
 		if (res.data.failure) {
 			return onError(res.data.failure)
@@ -64,27 +66,27 @@ const SignUpPage = () => {
 		if (res.data.status === 301) {
 			setIsResend(true)
 			setIsLoading(false)
-			toast({ description: 'OTP was expired. Please resend OTP' })
+			toast({ description: 'OTP muddati tugagan. Iltimos, OTPni qayta yuboring' })
 		}
 		if (res.data.status === 200) {
 			const response = await register(form.getValues())
 			if (response?.serverError || response?.validationErrors || !response?.data) {
-				return onError('Something went wrong')
+				return onError('Xatolik yuz berdi')
 			}
 			if (response.data.failure) {
 				return onError(response.data.failure)
 			}
 			if (response.data.user._id) {
-				toast({ description: 'User created successfully' })
+				toast({ description: 'Foydalanuvchi muvaffaqiyatli yaratildi' })
 				signIn('credentials', { userId: response.data.user._id, callbackUrl: '/' })
 			}
 		}
 	}
 
 	return (
-		<Card className='w-1/2 p-4'>
-			<h1 className='text-xl font-bold'>Sign Up</h1>
-			<p className='text-sm text-muted-foreground'>Welcome to our platform! Please sign up to create an</p>
+		<Card className='w-full max-w-sm p-4'>
+			<h1 className='text-xl font-bold'>Ro'yxatdan o'tish</h1>
+			<p className='text-sm text-muted-foreground'>Platformamizga xush kelibsiz! Hisob yaratish uchun ro'yxatdan o'ting</p>
 			<Separator className='my-3' />
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
@@ -93,7 +95,7 @@ const SignUpPage = () => {
 						name='fullName'
 						render={({ field }) => (
 							<FormItem className='space-y-0'>
-								<Label>Full Name</Label>
+								<Label>To'liq ism</Label>
 								<FormControl>
 									<Input placeholder='Osman Ali' disabled={isLoading || isVerifying} {...field} />
 								</FormControl>
@@ -106,9 +108,9 @@ const SignUpPage = () => {
 						name='email'
 						render={({ field }) => (
 							<FormItem className='space-y-0'>
-								<Label>Email</Label>
+								<Label>Elektron pochta</Label>
 								<FormControl>
-									<Input placeholder='example@gmial.com' disabled={isLoading || isVerifying} {...field} />
+									<Input placeholder='misol@gmail.com' disabled={isLoading || isVerifying} {...field} />
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
@@ -119,7 +121,7 @@ const SignUpPage = () => {
 						name='password'
 						render={({ field }) => (
 							<FormItem className='space-y-0'>
-								<Label>Password</Label>
+								<Label>Parol</Label>
 								<FormControl>
 									<Input placeholder='****' type='password' disabled={isLoading || isVerifying} {...field} />
 								</FormControl>
@@ -128,58 +130,60 @@ const SignUpPage = () => {
 						)}
 					/>
 					{!isVerifying && (
-						<Button type='submit' disabled={isLoading}>
-							Submit {isLoading && <Loader className='animate-spin' />}
+						<Button type='submit' disabled={isLoading} className='w-full'>
+							Yuborish {isLoading && <Loader className='ml-2 h-4 w-4 animate-spin' />}
 						</Button>
 					)}
 				</form>
 			</Form>
 			{isVerifying && (
 				<Form {...otpForm}>
-					<form onSubmit={otpForm.handleSubmit(onVerify)} className='space-y-2 mt-2'>
+					<form onSubmit={otpForm.handleSubmit(onVerify)} className='mt-2 space-y-2'>
 						<FormField
 							control={otpForm.control}
 							name='otp'
 							render={({ field }) => (
-								<FormItem className='space-y-0 w-full'>
-									<Label>Enter OTP</Label>
+								<FormItem className='w-full space-y-0'>
+									<Label>OTP kodini kiriting</Label>
 									<FormControl>
-										<InputOTP maxLength={6} {...field}>
-											<InputOTPGroup>
-												<InputOTPSlot index={0} />
-												<InputOTPSlot index={1} />
-												<InputOTPSlot index={2} />
-											</InputOTPGroup>
-											<InputOTPSeparator />
-											<InputOTPGroup>
-												<InputOTPSlot index={3} />
-												<InputOTPSlot index={4} />
-												<InputOTPSlot index={5} />
-											</InputOTPGroup>
-										</InputOTP>
+										<div className='flex justify-center'>
+											<InputOTP maxLength={6} {...field}>
+												<InputOTPGroup>
+													<InputOTPSlot index={0} />
+													<InputOTPSlot index={1} />
+													<InputOTPSlot index={2} />
+												</InputOTPGroup>
+												<InputOTPSeparator />
+												<InputOTPGroup>
+													<InputOTPSlot index={3} />
+													<InputOTPSlot index={4} />
+													<InputOTPSlot index={5} />
+												</InputOTPGroup>
+											</InputOTP>
+										</div>
 									</FormControl>
 									<FormMessage className='text-xs text-red-500' />
 								</FormItem>
 							)}
 						/>
-						<div className='flex items-center gap-1'>
-							<Button type='submit' disabled={isLoading || isResend}>
-								Verify {isLoading && <Loader className='animate-spin' />}
+						<div className='flex flex-col gap-2 md:flex-row md:items-center md:gap-1'>
+							<Button type='submit' disabled={isLoading || isResend} className='w-full md:w-auto'>
+								Tasdiqlash {isLoading && <Loader className='ml-2 h-4 w-4 animate-spin' />}
 							</Button>
 							{isResend && (
-								<Button type='button' onClick={() => onSubmit(form.getValues())} disabled={isLoading}>
-									Resend OTP {isLoading && <Loader className='animate-spin' />}
+								<Button type='button' onClick={() => onSubmit(form.getValues())} disabled={isLoading} className='w-full md:w-auto'>
+									OTP qayta yuborish {isLoading && <Loader className='ml-2 h-4 w-4 animate-spin' />}
 								</Button>
 							)}
 						</div>
 					</form>
 				</Form>
 			)}
-			<div className='mt-4'>
+			<div className='mt-4 text-center'>
 				<div className='text-sm text-muted-foreground'>
-					Already have an account?{' '}
+					Hisobingiz bormi?{' '}
 					<Button asChild variant={'link'} className='p-0'>
-						<Link href='/sign-in'>Sign in</Link>
+						<Link href='/sign-in'>Kirish</Link>
 					</Button>
 				</div>
 			</div>

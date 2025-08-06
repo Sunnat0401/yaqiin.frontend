@@ -15,15 +15,15 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-	title: 'Seleor e-commerce',
-	description: 'Seleor e-commerce website built with Next.js',
+	title: 'Seleor elektron savdo',
+	description: 'Next.js bilan qurilgan Seleor elektron savdo veb-sayti',
 	icons: { icon: '/favicon.png' },
 }
 
 const RootLayout: FC<ChildProps> = ({ children }) => {
 	return (
 		<SessionProvider>
-			<html lang='en'>
+			<html lang='uz'>
 				<body className={`${montserrat.className} antialiased`}>
 					<Navbar />
 					<main className='container max-w-6xl mt-24'>{children}</main>

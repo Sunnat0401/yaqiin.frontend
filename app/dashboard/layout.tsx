@@ -11,11 +11,11 @@ const Layout: FC<ChildProps> = async ({ children }) => {
 	if (!session) return redirect('/sign-in')
 
 	return (
-		<div className='grid grid-cols-3 gap-4'>
-			<div className='col-span-1'>
+		<div className='grid grid-cols-3 gap-4 max-lg:flex max-[355px]:gap-1 '>
+			<div className='col-span-1 max-lg:w-[46px]'>
 				<Sidebar />
 			</div>
-			<div className='col-span-2 pb-10'>{children}</div>
+			<div className='col-span-2 pb-10 max-lg:w-full'>{children}</div>
 		</div>
 	)
 }

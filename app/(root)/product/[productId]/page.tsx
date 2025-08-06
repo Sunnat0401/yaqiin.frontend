@@ -44,7 +44,7 @@ const Page: FC<Props> = async ({ params }) => {
 				<p className='font-bold'>{formatPrice(+product.price)}</p>
 				<CreateOrderButton />
 				<div className='text-xs'>
-					Your purchase is secure with us. We do not store any credit card information. We use Payme for payment processing.
+					Sizning xaridingiz biz bilan xavfsiz. Biz hech qanday kredit karta ma'lumotlarini saqlamaymiz. To'lov uchun Payme xizmatidan foydalanamiz.
 				</div>
 			</div>
 		</div>

@@ -15,7 +15,7 @@ const Loading = () => {
 			<div className='w-full h-52 bg-secondary flex justify-center items-center'>
 				<div className='relative'>
 					<Avatar className='size-32'>
-						<AvatarFallback className='bg-primary text-white text-6xl'>SB</AvatarFallback>
+						<AvatarFallback className='bg-primary text-white text-6xl'>ST</AvatarFallback>
 					</Avatar>
 
 					<Button size={'icon'} className='absolute right-0 bottom-0 rounded-full border border-primary' variant={'secondary'}>
